@@ -1,0 +1,7 @@
+.vercel
+node_modules/
+output/
+.playwright-cli/
+.DS_Store
+assets/hero-ndt-ai.png
+assets/explorer-annotation.jpg
