@@ -59,6 +59,15 @@ function sanitizeArticle(markup) {
   ];
   root.querySelectorAll(removeSelectors.join(",")).forEach((element) => element.remove());
 
+  root.querySelectorAll(".gallery").forEach((gallery) => {
+    const items = [...gallery.children].filter((child) => child.tagName === "FIGURE");
+    if (!items.length) return;
+    const replacement = parsed.createElement("div");
+    replacement.className = "source-gallery";
+    replacement.append(...items);
+    gallery.replaceWith(replacement);
+  });
+
   const allowedTags = new Set([
     "A", "BLOCKQUOTE", "BR", "CODE", "EM", "FIGCAPTION", "FIGURE", "H2", "H3", "H4", "H5",
     "HR", "IMG", "LI", "OL", "P", "PRE", "STRONG", "SUB", "SUP", "TABLE", "TBODY", "TD", "TH", "THEAD", "TR", "UL"
@@ -66,6 +75,7 @@ function sanitizeArticle(markup) {
 
   [...root.querySelectorAll("*")].forEach((node) => {
     let element = node;
+    const isSourceGallery = element.tagName === "DIV" && element.classList.contains("source-gallery");
     if (element.tagName === "H1") {
       const replacement = parsed.createElement("h2");
       replacement.innerHTML = element.innerHTML;
@@ -73,13 +83,15 @@ function sanitizeArticle(markup) {
       element = replacement;
     }
 
-    if (!allowedTags.has(element.tagName)) {
+    if (!allowedTags.has(element.tagName) && !isSourceGallery) {
       element.replaceWith(...element.childNodes);
       return;
     }
 
     [...element.attributes].forEach((attribute) => {
-      if (!["alt", "height", "href", "src", "srcset", "title", "width"].includes(attribute.name)) {
+      const isAllowed = ["alt", "height", "href", "src", "srcset", "title", "width"].includes(attribute.name)
+        || (isSourceGallery && attribute.name === "class");
+      if (!isAllowed) {
         element.removeAttribute(attribute.name);
       }
     });

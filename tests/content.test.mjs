@@ -110,10 +110,12 @@ test("uses the official sentin content source for complete articles and long-for
   assert.match(articleScript, /\/api\/posts\?slug=/);
   assert.match(articleScript, /type=pages/);
   assert.match(articleScript, /sanitizeArticle/);
+  assert.match(articleScript, /source-gallery/);
   assert.match(allHtml, /data-source-page="press"/);
   assert.match(allHtml, /data-source-page="jobs"/);
-  assert.match(allHtml, /data-source-page="awards"/);
   assert.match(allHtml, /data-source-page="faq"/);
+  assert.match(allHtml, /Geschäftsleitung/);
+  assert.match(allHtml, /Was andere über unsere digitalen Prüfer sagen\./);
   assert.match(allHtml, /Der ZfP 4\.0 Guide – Alles, was Sie wissen müssen\./);
   assert.match(allHtml, /3 Fehler und Katastrophen in der ZfP/);
 });
