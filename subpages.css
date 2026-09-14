@@ -1002,8 +1002,8 @@
 }
 
 .wp-article-content blockquote {
-  padding: 10px 0 10px 26px;
-  border-left: 3px solid var(--accent);
+  padding: 26px 0 2px;
+  border-top: 1px solid var(--line);
 }
 
 .wp-article-content blockquote p {
